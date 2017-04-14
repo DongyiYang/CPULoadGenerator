@@ -3,7 +3,6 @@
 
 import time
 
-from Plot import realTimePlot
 
 class closedLoopActuator():
     """
@@ -19,8 +18,6 @@ class closedLoopActuator():
         self.period = 0.05 # actuation period  in seconds
         self.last_plot_time = time.time()
         self.start_time = time.time()
-        if self.plot:
-            self.graph = realTimePlot(self.duration, cpu_core, target)
 
     def generate_load(self, sleep_time):
         interval = time.time() + self.cycle - sleep_time
@@ -52,7 +49,7 @@ class closedLoopActuator():
         time.sleep(sleep_time)
            
     def run(self):
-        while (time.time() - self.start_time) <= self.duration:
+        while self.duration == 0 or (time.time() - self.start_time) <= self.duration:
             self.controller.setCpu(self.monitor.getCpuLoad())
             sleep_time = self.controller.getSleepTime()
             self.generate_load(sleep_time)

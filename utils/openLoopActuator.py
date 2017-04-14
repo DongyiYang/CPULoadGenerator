@@ -3,7 +3,6 @@
 
 import time
 
-from Plot import realTimePlot
 
 class openLoopActuator():
     """
@@ -16,8 +15,6 @@ class openLoopActuator():
         self.plot = plot
         self.period = 0.05 # actuation period  in seconds
         self.cpu_core = cpu_core
-        if self.plot:
-            self.graph = realTimePlot(self.duration, cpu_core, 0)
 
     def setSleepTime(self, sleep_time):
         self.sleep_time = sleep_time
@@ -49,7 +46,7 @@ class openLoopActuator():
 
     def run(self):
         duration  = time.time() + self.duration
-        while (time.time() < duration):
+        while (self.duration ==0 or time.time() < duration):
             self.generate_load(self.checkSleepTime(self.sleep_time))
             self.sendPlotSample()
 
